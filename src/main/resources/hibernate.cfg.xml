@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-configuration>
+  <session-factory>
+    <!-- JDBC -->
+    <property name="hibernate.connection.driver_class">org.h2.Driver</property>
+    <property name="hibernate.connection.url">jdbc:h2:./data/tasks;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1</property>
+    <property name="hibernate.connection.username">sa</property>
+    <property name="hibernate.connection.password"></property>
+
+    <!-- Dialect -->
+    <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
+
+    <!-- Автоматическое создание/валидация схемы -->
+    <!-- Для dev: create-drop или update; для prod: validate -->
+    <property name="hibernate.hbm2ddl.auto">validate</property>
+
+    <!-- Лог SQL (необязательно) -->
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.format_sql">true</property>
+
+    <!-- Регистрация entity-классов -->
+    <mapping class="com.task.manager.domain.model.User"/>
+    <mapping class="com.task.manager.domain.model.Task"/>
+  </session-factory>
+</hibernate-configuration>
