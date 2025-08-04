@@ -8,12 +8,11 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class AuthController {
-    
+
     private AuthService authService;
 
     // TODO добавить локализацию и команды
-    public boolean registration(String username, char[] rawPassword) {
-        UserDTO userDTO = new UserDTO(username, rawPassword);
+    public boolean registration(UserDTO userDTO) {
 
         if(authService.registration(userDTO)){
             return true;
@@ -23,8 +22,7 @@ public class AuthController {
 
     }
 
-    public boolean login(String username, char[] rawPassword) {
-        UserDTO userDTO = new UserDTO(username, rawPassword);
+    public boolean login(UserDTO userDTO) {
 
         if(authService.login(userDTO)){
             return true;

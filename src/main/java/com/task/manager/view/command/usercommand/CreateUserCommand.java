@@ -1,14 +1,20 @@
 package com.task.manager.view.command.usercommand;
 
+import com.task.manager.contoller.UserController;
 import com.task.manager.domain.dto.UserDTO;
 import com.task.manager.view.command.Command;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class CreateUserCommand implements Command<UserDTO> {
+
+    private UserDTO createUser;
+    private UserController userController;
 
     @Override
     public UserDTO execute() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'execute'");
+        return userController.create(createUser);
     }
     
 }
