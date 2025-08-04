@@ -7,6 +7,9 @@ import com.task.manager.domain.model.Task;
 import com.task.manager.service.TaskSevice;
 import com.task.manager.view.command.Command;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class CreateTaskCommand implements Command<TaskDTO> {
     private TaskDTO inputTaskDTO;
     private TaskSevice taskSevice;

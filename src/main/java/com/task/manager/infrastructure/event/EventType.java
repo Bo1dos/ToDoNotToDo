@@ -21,7 +21,11 @@ public enum EventType {
 
     USER_FOUND_BY_ID("event.user.found_by_id"),
     USER_FOUND_BY_USERNAME("event.user.found_by_username"),
-    USER_FOUND_ALL("event.user.found_all");
+    USER_FOUND_ALL("event.user.found_all"),
+
+    USER_REGISTERED("event.auth.registration"),
+    USER_LOGGED_IN("event.auth.login"),
+    USER_LOGGED_OUT("event.auth.logout");
 
 
     // TODO

@@ -12,8 +12,16 @@ public final class EventFactory {
     
     private final ResourceBundle resourceBundle;
 
+    public Event userRegistered(String username) {
+        return new SimpleEvent(EventType.USER_REGISTERED, resourceBundle, username);
+    }
+
     public Event userLoggedIn(String username) {
         return new SimpleEvent(EventType.USER_LOGGED_IN, resourceBundle, username);
+    }
+
+    public Event userLoggedOut(String username) {
+        return new SimpleEvent(EventType.USER_LOGGED_OUT, resourceBundle, username);
     }
 
     public Event taskCreated(TaskDTO task) {
