@@ -25,7 +25,11 @@ public enum EventType {
 
     USER_REGISTERED("event.auth.registration"),
     USER_LOGGED_IN("event.auth.login"),
-    USER_LOGGED_OUT("event.auth.logout");
+    USER_LOGGED_OUT("event.auth.logout"),
+
+    ACCESS_DENIED("event.exception.access_denied"),
+    VALIDATION_FAILED("event.exception.validation_failed"),
+    UNEXPECTED_ERROR("event.exception.unexpected_error");
 
 
     // TODO

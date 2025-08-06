@@ -12,44 +12,94 @@ public final class EventFactory {
     
     private final ResourceBundle resourceBundle;
 
-    public Event userRegistered(String username) {
-        return new SimpleEvent(EventType.USER_REGISTERED, resourceBundle, username);
+    public Event userRegistered(String username, boolean isSuccess) {
+        return new SimpleEvent(EventType.USER_REGISTERED, resourceBundle, username, isSuccess);
     }
 
-    public Event userLoggedIn(String username) {
-        return new SimpleEvent(EventType.USER_LOGGED_IN, resourceBundle, username);
+    public Event userLoggedIn(String username, boolean isSuccess) {
+        return new SimpleEvent(EventType.USER_LOGGED_IN, resourceBundle, username, isSuccess);
     }
 
-    public Event userLoggedOut(String username) {
-        return new SimpleEvent(EventType.USER_LOGGED_OUT, resourceBundle, username);
+    public Event userLoggedOut(String username, boolean isSuccess) {
+        return new SimpleEvent(EventType.USER_LOGGED_OUT, resourceBundle, username, isSuccess);
     }
 
-    public Event taskCreated(TaskDTO task) {
-        return new SimpleEvent(EventType.TASK_CREATED, resourceBundle, task.getHeader());
+    public Event taskCreated(TaskDTO task, boolean isSuccess) {
+        return new SimpleEvent(EventType.TASK_CREATED, resourceBundle, task.getHeader(), isSuccess);
     }
 
-    public Event taskDeleted(TaskDTO task) {
-        return new SimpleEvent(EventType.TASK_DELETED, resourceBundle, task.getHeader());
+    // public Event taskDeleted(TaskDTO task, boolean isSuccess) {
+    //     return new SimpleEvent(EventType.TASK_DELETED, resourceBundle, task.getHeader(), isSuccess);
+    // }
+
+    public Event taskDeleted(UUID taskID, boolean isSuccess) {
+        return new SimpleEvent(EventType.TASK_DELETED, resourceBundle, taskID, isSuccess);
     }
 
-    public Event taskUpdated(TaskDTO task) {
-        return new SimpleEvent(EventType.TASK_UPDATED, resourceBundle, task.getHeader());
+    public Event taskUpdated(TaskDTO task, boolean isSuccess) {
+        return new SimpleEvent(EventType.TASK_UPDATED, resourceBundle, task.getHeader(), isSuccess);
     }
 
-    public Event userCreated(String username) {
-        return new SimpleEvent(EventType.USER_CREATED, resourceBundle, username);
+    public Event taskFoundById(UUID id, boolean isSuccess) {
+        return new SimpleEvent(EventType.TASK_FOUND_BY_ID, resourceBundle, id.toString(), isSuccess);
     }
 
-    public Event userDeleted(String username) {
-        return new SimpleEvent(EventType.USER_DELETED, resourceBundle, username);
+    public Event taskFoundAll(int count, boolean isSuccess) {
+        return new SimpleEvent(EventType.TASK_FOUND_ALL, resourceBundle, String.valueOf(count), isSuccess);
     }
 
-    public Event userFoundById(UUID id) {
-        return new SimpleEvent(EventType.USER_FOUND_BY_ID, resourceBundle, id.toString());
+    public Event taskFoundByHeader(String header, boolean isSuccess) {
+        return new SimpleEvent(EventType.TASK_FOUND_BY_HEADER, resourceBundle, header, isSuccess);
     }
 
-    // TODO
-    // Прописать под все команды
+    public Event taskFoundDone(int count, boolean isSuccess) {
+        return new SimpleEvent(EventType.TASK_FOUND_DONE, resourceBundle, String.valueOf(count), isSuccess);
+    }
+
+    public Event taskFoundUndone(int count, boolean isSuccess) {
+        return new SimpleEvent(EventType.TASK_FOUND_UNDONE, resourceBundle, String.valueOf(count), isSuccess);
+    }
+
+    public Event taskFoundOverdue(int count, boolean isSuccess) {
+        return new SimpleEvent(EventType.TASK_FOUND_OVERDUE, resourceBundle, String.valueOf(count), isSuccess);
+    }
+
+    public Event userCreated(String username, boolean isSuccess) {
+        return new SimpleEvent(EventType.USER_CREATED, resourceBundle, username, isSuccess);
+    }
+
+    public Event userDeleted(String username, boolean isSuccess) {
+        return new SimpleEvent(EventType.USER_DELETED, resourceBundle, username, isSuccess);
+    }
+
+    public Event userFoundById(UUID id, boolean isSuccess) {
+        return new SimpleEvent(EventType.USER_FOUND_BY_ID, resourceBundle, id.toString(), isSuccess);
+    }
+
+    public Event userUpdated(String username, boolean isSuccess) {
+        return new SimpleEvent(EventType.USER_UPDATED, resourceBundle, username, isSuccess);
+    }
+
+    public Event userFoundByUsername(String username, boolean isSuccess) {
+        return new SimpleEvent(EventType.USER_FOUND_BY_USERNAME, resourceBundle, username, isSuccess);
+    }
+
+    public Event userFoundAll(int count, boolean isSuccess) {
+        return new SimpleEvent(EventType.USER_FOUND_ALL, resourceBundle, String.valueOf(count), isSuccess);
+    }
+
+
+    public Event accessDenied() {
+        return new SimpleEvent(EventType.ACCESS_DENIED, resourceBundle, "Access denied.");
+    }
+
+    public Event validationFailed() {
+        return new SimpleEvent(EventType.VALIDATION_FAILED, resourceBundle, "Invalid input.");
+    }
+
+    public Event unexpectedError() {
+        return new SimpleEvent(EventType.UNEXPECTED_ERROR, resourceBundle, "Something went wrong.");
+    }
 }
 
 

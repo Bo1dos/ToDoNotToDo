@@ -1,8 +1,8 @@
-package com.task.manager.view.command.authcommand;
+package com.task.manager.infrastructure.command.authcommand;
 
 import com.task.manager.contoller.AuthController;
 import com.task.manager.domain.dto.UserDTO;
-import com.task.manager.view.command.Command;
+import com.task.manager.infrastructure.command.Command;
 
 import lombok.AllArgsConstructor;
 

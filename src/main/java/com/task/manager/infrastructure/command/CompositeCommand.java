@@ -1,4 +1,4 @@
-package com.task.manager.view.command;
+package com.task.manager.infrastructure.command;
 
 import java.util.List;
 

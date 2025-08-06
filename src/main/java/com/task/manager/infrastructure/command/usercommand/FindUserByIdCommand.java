@@ -1,22 +1,23 @@
-package com.task.manager.view.command.usercommand;
+package com.task.manager.infrastructure.command.usercommand;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import com.task.manager.contoller.UserController;
 import com.task.manager.domain.dto.UserDTO;
-import com.task.manager.view.command.Command;
+import com.task.manager.infrastructure.command.Command;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class FindUserByUsernameCommand implements Command<Optional<UserDTO>> {
+public class FindUserByIdCommand implements Command<Optional<UserDTO>> {
 
-    private String findUsername;
+    private UUID findID;
     private UserController userController;
 
     @Override
     public Optional<UserDTO> execute() {
-        return userController.findByUsername(findUsername);
+        return userController.findById(findID);
     }
     
 }

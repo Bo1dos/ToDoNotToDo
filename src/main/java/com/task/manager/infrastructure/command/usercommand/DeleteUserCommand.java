@@ -1,9 +1,9 @@
-package com.task.manager.view.command.usercommand;
+package com.task.manager.infrastructure.command.usercommand;
 
 import java.util.UUID;
 
 import com.task.manager.contoller.UserController;
-import com.task.manager.view.command.Command;
+import com.task.manager.infrastructure.command.Command;
 
 import lombok.AllArgsConstructor;
 
