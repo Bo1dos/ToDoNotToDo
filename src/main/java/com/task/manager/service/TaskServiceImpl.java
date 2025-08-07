@@ -15,7 +15,7 @@ import com.task.manager.repository.TaskRepository;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class TaskSeviceImpl implements TaskSevice {
+public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final EntityMapper<Task, TaskDTO> entityMapper;

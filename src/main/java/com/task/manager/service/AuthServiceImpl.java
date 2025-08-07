@@ -9,6 +9,9 @@ import com.task.manager.domain.model.User;
 import com.task.manager.repository.UserRepository;
 import com.task.manager.utils.PasswordUtils;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private UserRepository userRepository;

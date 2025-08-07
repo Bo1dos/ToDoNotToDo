@@ -25,8 +25,9 @@ import lombok.AllArgsConstructor;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-    private final UserContext userContext;
     private final EntityMapper<User,UserDTO> entityMapper;
+    private final UserContext userContext;
+
 
 
 

@@ -6,7 +6,7 @@ import java.util.UUID;
 import com.task.manager.domain.dto.TaskDTO;
 import com.task.manager.domain.model.Task;
 
-public interface TaskSevice extends Service<Task, TaskDTO, UUID> {
+public interface TaskService extends Service<Task, TaskDTO, UUID> {
     public List<Task> findByHeader(String header);
     public List<Task> findDone();
     public List<Task> findUndone();

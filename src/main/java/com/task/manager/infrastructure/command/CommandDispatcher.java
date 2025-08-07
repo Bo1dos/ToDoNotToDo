@@ -4,10 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import lombok.AllArgsConstructor;
 
 public class CommandDispatcher {
-    private final Map<String, Supplier<? extends Command<?>>> registry = new HashMap<>();
+    private final Map<String, CommandFactory> registry = new HashMap<>();
     private final CommandExecutor commandExecutor;
 
 
@@ -15,19 +14,19 @@ public class CommandDispatcher {
         this.commandExecutor = commandExecutor;
     }
 
-    public <T> void register(String name, Supplier<Command<T>> supplier) {
-        registry.put(name, supplier);
+    public <T> void register(String name, CommandFactory commandFactory) {
+        registry.put(name, commandFactory);
     }
 
 
     @SuppressWarnings("unchecked")
-    public <T> T dispatch(String name) {
-        Supplier<? extends Command<?>> supplier = registry.get(name);
-        if (supplier == null){
+    public <T> T dispatch(String name, Map<String, String> args) {
+        CommandFactory commandFactory = registry.get(name);
+        if (commandFactory == null){
             throw new IllegalArgumentException("No command registered with name: " + name);
         }
 
-        Command<T> command = (Command<T>) registry.get(supplier);
+        Command<T> command = (Command<T>) commandFactory.create(args);
 
         return commandExecutor.execute(command);
     }

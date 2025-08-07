@@ -10,7 +10,7 @@ import com.task.manager.domain.mapper.EntityMapper;
 import com.task.manager.domain.model.Task;
 import com.task.manager.infrastructure.event.EventFactory;
 import com.task.manager.infrastructure.notification.NotificationService;
-import com.task.manager.service.TaskSevice;
+import com.task.manager.service.TaskService;
 
 import lombok.AllArgsConstructor;
 
@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 
 public class TaskController {
 
-    private final TaskSevice taskSevice;
+    private final TaskService taskService;
     private final EntityMapper<Task, TaskDTO> entityMapper;
 
     private final NotificationService notificationService;
@@ -26,7 +26,7 @@ public class TaskController {
 
 
     public TaskDTO create(TaskDTO dto) {
-        Task task = taskSevice.create(dto);
+        Task task = taskService.create(dto);
 
         if (task == null) {
             notificationService.publish(eventFactory.taskCreated(dto, false));
@@ -39,7 +39,7 @@ public class TaskController {
 
 
     public Optional<TaskDTO> findById(UUID id) {
-        Optional<Task> task = taskSevice.findById(id);
+        Optional<Task> task = taskService.findById(id);
 
         if (task == null) {
             notificationService.publish(eventFactory.taskFoundById(id, false));
@@ -53,7 +53,7 @@ public class TaskController {
     }
 
     public List<TaskDTO> findAll() {
-        List<Task> allTask = taskSevice.findAll();
+        List<Task> allTask = taskService.findAll();
 
         int size = allTask.size();
         if (size == 0){
@@ -69,7 +69,7 @@ public class TaskController {
 
 
     public List<TaskDTO> findByHeader(String header) {
-        List<Task> findByheader = taskSevice.findByHeader(header);
+        List<Task> findByheader = taskService.findByHeader(header);
 
         int size = findByheader.size();
         if (size == 0) {
@@ -85,7 +85,7 @@ public class TaskController {
 
 
     public List<TaskDTO> findDone() {
-        List<Task> findDone = taskSevice.findDone();
+        List<Task> findDone = taskService.findDone();
         
         int size = findDone.size();
         if (size == 0) {
@@ -101,7 +101,7 @@ public class TaskController {
 
 
     public List<TaskDTO> findUndone() {
-        List<Task> findUndone = taskSevice.findUndone();
+        List<Task> findUndone = taskService.findUndone();
 
         int size = findUndone.size();
         if(size == 0) {
@@ -116,7 +116,7 @@ public class TaskController {
     }
 
     public List<TaskDTO> findOverdue() {
-        List<Task> findOverdue = taskSevice.findOverdue();
+        List<Task> findOverdue = taskService.findOverdue();
 
         int size = findOverdue.size();
         if(size == 0) {
@@ -132,7 +132,7 @@ public class TaskController {
 
 
     public TaskDTO update(TaskDTO dto) {
-        Task task = taskSevice.update(dto);
+        Task task = taskService.update(dto);
 
         if (task == null) {
             notificationService.publish(eventFactory.taskUpdated(dto, false));
@@ -146,7 +146,7 @@ public class TaskController {
 
 
     public void delete(UUID id) {
-        taskSevice.delete(id);
+        taskService.delete(id);
         
         notificationService.publish(eventFactory.taskDeleted(id, true));
     }
