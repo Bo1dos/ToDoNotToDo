@@ -20,7 +20,7 @@ public class CliCommandParser {
             int spaceInd = token.indexOf(' ');
             String key = token.substring(0, spaceInd);
 
-            if (spaceInd != -1) {
+            if (spaceInd == -1) {
                args.put(key, "");
             } else {
                 
@@ -37,5 +37,12 @@ public class CliCommandParser {
         
 
         return args;
+    }
+
+    public String parseNameCommand(String input) {
+        int spaceInd = input.indexOf(' ');
+        String command = input.substring(0, spaceInd+1);
+
+        return command;
     }
 }

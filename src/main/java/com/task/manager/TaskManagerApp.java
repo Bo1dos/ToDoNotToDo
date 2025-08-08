@@ -23,8 +23,11 @@ import com.task.manager.infrastructure.command.CommandExecutor;
 import com.task.manager.infrastructure.command.authcommand.LoginCommand;
 import com.task.manager.infrastructure.command.authcommand.LogoutCommand;
 import com.task.manager.infrastructure.command.authcommand.RegistrationCommand;
+import com.task.manager.infrastructure.command.interfacecommand.ClearCommand;
+import com.task.manager.infrastructure.command.interfacecommand.ExitCommand;
 import com.task.manager.infrastructure.command.interfacecommand.HelpInfoCommand;
 import com.task.manager.infrastructure.command.interfacecommand.SetLocaleCommand;
+import com.task.manager.infrastructure.command.interfacecommand.WhoIAmCommand;
 import com.task.manager.infrastructure.command.taskcommand.CreateTaskCommand;
 import com.task.manager.infrastructure.command.taskcommand.DeleteTaskCommand;
 import com.task.manager.infrastructure.command.taskcommand.FindAllTasksCommand;
@@ -83,7 +86,7 @@ public class TaskManagerApp {
         // Init dispatcher, register commands
         CommandExecutor commandExecutor = new CommandExecutor(notificationService, eventFactory);
         CommandDispatcher dispatcher = new CommandDispatcher(commandExecutor);
-        register(dispatcher, authController, taskController, bundleProvider);
+        register(dispatcher, authController, taskController, bundleProvider, userContext, userMapper);
 
 
         // Init and run UI
@@ -92,7 +95,8 @@ public class TaskManagerApp {
     }
 
     private static void register(CommandDispatcher dispatcher, AuthController authController, 
-                            TaskController taskController, MessageBundleProvider bundleProvider) {
+                            TaskController taskController, MessageBundleProvider bundleProvider, 
+                            UserContext userContext, EntityMapper userMapper) {
         dispatcher.register("register", args ->
             new RegistrationCommand(new UserDTO((String) args.get("username"), 
                         ((String) args.get("password")).toCharArray()), authController));
@@ -133,7 +137,12 @@ public class TaskManagerApp {
         dispatcher.register("list-overdue", args -> new FindOverdueTasksCommand(taskController));
 
         dispatcher.register("set-language", args -> new SetLocaleCommand(bundleProvider, (String) args.get("lang")));
-        dispatcher.register("help", args -> new HelpInfoCommand());
+        dispatcher.register("help", args -> new HelpInfoCommand(bundleProvider));
+
+        dispatcher.register("clear", args -> new ClearCommand());
+        dispatcher.register("exit", args -> new ExitCommand(() -> System.exit(0)));
+        dispatcher.register("whoami", args -> new WhoIAmCommand(userContext, userMapper));
+
 
     }
 }

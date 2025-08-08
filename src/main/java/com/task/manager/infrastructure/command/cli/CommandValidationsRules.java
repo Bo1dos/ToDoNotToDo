@@ -37,7 +37,12 @@ public class CommandValidationsRules {
         Map.entry("list-tasks", Set.of()),
         Map.entry("list-done", Set.of()),
         Map.entry("list-undone", Set.of()),
-        Map.entry("list-overdue", Set.of())
+        Map.entry("list-overdue", Set.of()),
+
+        Map.entry("help", Set.of()),
+        Map.entry("whoami", Set.of()),
+        Map.entry("clear", Set.of()),
+        Map.entry("exit", Set.of())
     );
 
     /**
@@ -47,9 +52,14 @@ public class CommandValidationsRules {
         Map.entry("u", "username"),
         Map.entry("p", "password"),
 
-        Map.entry("h", "header"),
+        Map.entry("hd", "header"),
         Map.entry("d", "desc"),
-        Map.entry("dl", "deadline")
+        Map.entry("dl", "deadline"),
+
+        Map.entry("h", "help"),
+        Map.entry("w", "whoami"),
+        Map.entry("c", "clear"),
+        Map.entry("e", "exit")
     );
 
 

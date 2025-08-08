@@ -1,40 +1,54 @@
 package com.task.manager.utils;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import com.task.manager.domain.dto.TaskDTO;
 
 public class ConsoleTableUtils {
+
     public static void printTasks(List<TaskDTO> tasks) {
-        System.out.printf("%-36s %-20s %-10s\n", "ID", "Header", "Status");
-        System.out.println("=".repeat(70));
+        System.out.printf("%-36s %-20s %-10s %-20s %-20s\n",
+            "ID", "Header", "Status", "Deadline", "CreatedAt");
+        System.out.println("=".repeat(110));
         for (TaskDTO task : tasks) {
-            System.out.printf("%-36s %-20s %-10s\n",
-                task.getId(), task.getHeader(), task.getTaskStatus());
+            System.out.printf("%-36s %-20s %-10s %-20s %-20s\n",
+                task.getId(),
+                task.getHeader(),
+                task.getTaskStatus(),
+                task.getDeadLine() != null ? task.getDeadLine() : "-",
+                task.getCreationAt());
         }
     }
 
-    public static void printMessage(String msg) {
-        System.out.println("[INFO] " + msg);
+    public static void printTask(TaskDTO task) {
+        System.out.println("=".repeat(50));
+        System.out.printf("%-12s: %s%n", "ID", task.getId());
+        System.out.printf("%-12s: %s%n", "Header", task.getHeader());
+        System.out.printf("%-12s: %s%n", "Desc", task.getDescription());
+        System.out.printf("%-12s: %s%n", "Status", task.getTaskStatus());
+        System.out.printf("%-12s: %s%n", "Deadline", 
+            task.getDeadLine() != null ? task.getDeadLine() : "-");
+        System.out.printf("%-12s: %s%n", "CreatedAt", task.getCreationAt());
+        System.out.println("=".repeat(50));
     }
 
-    public static void printHelpMessage() {
-        System.out.println("📖 Доступные команды:"); //TODO: сделать под локализацию
+    public static void printInfo(String msg) {
+        System.out.println("\u001B[32m[INFO]\u001B[0m " + msg);
+    }
+
+    public static void printError(String msg) {
+        System.out.println("\u001B[31m[ERROR]\u001B[0m " + msg);
+    }
+
+    public static void printWarning(String msg) {
+        System.out.println("\u001B[33m[WARN]\u001B[0m " + msg);
+    }
+
+    public static void printHelpMessage(ResourceBundle bundle) {
+        System.out.println(bundle.getString("help.title"));
         System.out.println("──────────────────────────────────────────────");
-        System.out.println("register --username <u> --password <p>");
-        System.out.println("login --username <u> --password <p>");
-        System.out.println("logout");
-        System.out.println();
-        System.out.println("create-task [--header <h>] [--desc <d>] [--deadline <dl>]");
-        System.out.println("update-task --id <uuid> [--header <h>] [--desc <d>] [--deadline <dl>]");
-        System.out.println("delete-task --id <uuid>");
-        System.out.println("show-task --id <uuid>");
-        System.out.println("find-task-by-header --header <h>");
-        System.out.println();
-        System.out.println("list-tasks | list-done | list-undone | list-overdue");
-        System.out.println();
-        System.out.println("set-language --lang <en|ru>");
-        System.out.println("help");
+        System.out.println(bundle.getString("help.commands"));
         System.out.println("──────────────────────────────────────────────");
     }
 }
