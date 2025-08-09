@@ -1,6 +1,8 @@
 package com.task.manager.utils;
 
 import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Base64;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -68,15 +70,44 @@ public class PasswordUtils {
 
             PBEKeySpec spec = new PBEKeySpec(rawPassword, salt.getBytes(), ITERATIONS, KEY_LENGTH);
             SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            byte[] hash = skf.generateSecret(spec).getEncoded();
+            byte[] generatedHash = skf.generateSecret(spec).getEncoded();
 
-            if(isEquals(hash, passwordHash.getBytes())){
-                return true;
-            }
+
+            // Декодирование оригинального хеша из Base64
+            byte[] originalHash = Base64.getDecoder().decode(passwordHash);
+        
+             // Преобразование в читаемый формат для отладки
+        String generatedBase64 = Base64.getEncoder().encodeToString(generatedHash);
+        String generatedHex = bytesToHex(generatedHash);
+        String originalHex = bytesToHex(originalHash);
+        
+        // Подробный вывод для отладки
+        System.out.println("=== DEBUG: Password Verification ===");
+        System.out.println("Salt: " + salt);
+        System.out.println("Generated hash (Base64): " + generatedBase64);
+        System.out.println("Stored hash (Base64):    " + passwordHash);
+        System.out.println("Generated hash (HEX):    " + generatedHex);
+        System.out.println("Stored hash (HEX):       " + originalHex);
+        System.out.println("Length comparison: " + generatedHash.length + " vs " + originalHash.length);
+        System.out.println("Arrays equal: " + Arrays.equals(generatedHash, originalHash));
+        System.out.println("===================================");
+
+            // Сравнение массивов байт
+            return Arrays.equals(generatedHash, originalHash);
+
         } catch (Exception e) {
-            throw new RuntimeException("Ошибка хеширования пароля", e);
+            throw new RuntimeException("Ошибка проверки пароля", e);
         }
-
-        return false;
     }
+
+    // Вспомогательный метод для преобразования байтов в HEX-строку
+private static String bytesToHex(byte[] bytes) {
+    StringBuilder sb = new StringBuilder();
+    for (byte b : bytes) {
+        sb.append(String.format("%02x", b));
+    }
+    return sb.toString();
 }
+
+}
+

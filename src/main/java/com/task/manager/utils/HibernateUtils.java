@@ -12,6 +12,9 @@ public class HibernateUtils {
         try {
             Configuration cfg = new Configuration();
             cfg.configure("hibernate.cfg.xml");
+            // ЯВНО РЕГИСТРИРУЕМ АННОТИРОВАННЫЕ КЛАССЫ
+            cfg.addAnnotatedClass(com.task.manager.domain.model.User.class);
+            cfg.addAnnotatedClass(com.task.manager.domain.model.Task.class);
 
             StandardServiceRegistryBuilder builder = 
                 new StandardServiceRegistryBuilder()
@@ -26,6 +29,9 @@ public class HibernateUtils {
     }
 
     public static SessionFactory getSessionFactory() {
+        sessionFactory.getMetamodel().getEntities()
+                        .forEach(e -> System.out.println("ENTITY: " + e.getName() + " -> " + e.getJavaType()));
+
         return sessionFactory;
     }
 

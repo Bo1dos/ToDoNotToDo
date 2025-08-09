@@ -2,6 +2,8 @@ package com.task.manager.infrastructure.command.cli;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class CliCommandParser {
@@ -13,7 +15,17 @@ public class CliCommandParser {
 
         String [] tokens = input.trim().split(" (?=--)");
 
+        if (tokens.length == 1) {
+            return args;
+        }
+
+
         for (String token : tokens) {
+
+            if (!token.startsWith("--")) { // нет префикса - это команда
+                continue;
+            }
+
             token = token.substring(2);
 
             // Разбиваем токен вида: flag arg на flag и arg
@@ -40,8 +52,14 @@ public class CliCommandParser {
     }
 
     public String parseNameCommand(String input) {
-        int spaceInd = input.indexOf(' ');
-        String command = input.substring(0, spaceInd+1);
+        int ind = input.indexOf(' ');
+
+        // Команда без флагов\аргументов
+        if (ind == -1) {
+            ind = input.length();
+        }
+
+        String command = input.substring(0, ind);
 
         return command;
     }

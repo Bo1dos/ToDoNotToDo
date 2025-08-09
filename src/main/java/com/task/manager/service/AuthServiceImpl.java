@@ -42,6 +42,7 @@ public class AuthServiceImpl implements AuthService {
 
         if(PasswordUtils.verify(rawPassword, user.get().getPasswordHash(), user.get().getSalt())){
             Arrays.fill(rawPassword, '\0');
+            userContext.setUser(user.get());
             return true;
         }
         Arrays.fill(rawPassword, '\0');

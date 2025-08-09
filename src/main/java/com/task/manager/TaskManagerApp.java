@@ -1,5 +1,7 @@
 package com.task.manager;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.UUID;
 
 
@@ -18,6 +20,7 @@ import com.task.manager.domain.model.User;
 import com.task.manager.infrastructure.ConsoleNotifier;
 import com.task.manager.infrastructure.MessageBundleProvider;
 import com.task.manager.infrastructure.Notifier;
+import com.task.manager.infrastructure.ShutdownManager;
 import com.task.manager.infrastructure.command.CommandDispatcher;
 import com.task.manager.infrastructure.command.CommandExecutor;
 import com.task.manager.infrastructure.command.authcommand.LoginCommand;
@@ -54,8 +57,34 @@ import com.task.manager.service.TaskServiceImpl;
 import com.task.manager.view.ui.UserInterface;
 import com.task.manager.view.ui.cli.CliUserInterfaceImpl;
 
+import liquibase.Contexts;
+import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.resource.ClassLoaderResourceAccessor;
+
 public class TaskManagerApp {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        // runLiquibase();
+        
+        // Init and run UI
+        UserInterface ui = init();
+        ui.run();
+    }
+
+    private static void runLiquibase() throws Exception {
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:h2:./data/tasks;AUTO_SERVER=TRUE;DB_CLOSE_DELAY=-1", "sa", "")) {
+            Database database = DatabaseFactory.getInstance()
+                .findCorrectDatabaseImplementation(new JdbcConnection(conn));
+            Liquibase liquibase = new Liquibase("db/changelog/db.changelog-master.yaml",
+                new ClassLoaderResourceAccessor(), database);
+            liquibase.update(new Contexts()); // или liquibase.update("")
+        }
+    }   
+
+    private static UserInterface init() {
         // Init UserContext
         UserContext userContext = new UserContextImpl();
 
@@ -86,17 +115,11 @@ public class TaskManagerApp {
         // Init dispatcher, register commands
         CommandExecutor commandExecutor = new CommandExecutor(notificationService, eventFactory);
         CommandDispatcher dispatcher = new CommandDispatcher(commandExecutor);
-        register(dispatcher, authController, taskController, bundleProvider, userContext, userMapper);
+
+        // Init ShutdownManager
+        ShutdownManager shutdownManager = new ShutdownManager();
 
 
-        // Init and run UI
-        UserInterface ui = new CliUserInterfaceImpl(dispatcher);
-        ui.run();
-    }
-
-    private static void register(CommandDispatcher dispatcher, AuthController authController, 
-                            TaskController taskController, MessageBundleProvider bundleProvider, 
-                            UserContext userContext, EntityMapper userMapper) {
         dispatcher.register("register", args ->
             new RegistrationCommand(new UserDTO((String) args.get("username"), 
                         ((String) args.get("password")).toCharArray()), authController));
@@ -140,9 +163,14 @@ public class TaskManagerApp {
         dispatcher.register("help", args -> new HelpInfoCommand(bundleProvider));
 
         dispatcher.register("clear", args -> new ClearCommand());
-        dispatcher.register("exit", args -> new ExitCommand(() -> System.exit(0)));
+        dispatcher.register("exit", args -> new ExitCommand(shutdownManager));
         dispatcher.register("whoami", args -> new WhoIAmCommand(userContext, userMapper));
 
+        // Init ui
+        UserInterface ui = new CliUserInterfaceImpl(dispatcher, shutdownManager);
+
+
+        return ui;
 
     }
 }

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import com.task.manager.infrastructure.command.result.CommandResult;
+
 
 public class CommandDispatcher {
     private final Map<String, CommandFactory> registry = new HashMap<>();
@@ -20,7 +22,7 @@ public class CommandDispatcher {
 
 
     @SuppressWarnings("unchecked")
-    public <T> T dispatch(String name, Map<String, String> args) {
+    public <T> CommandResult<T> dispatch(String name, Map<String, String> args) {
         CommandFactory commandFactory = registry.get(name);
         if (commandFactory == null){
             throw new IllegalArgumentException("No command registered with name: " + name);

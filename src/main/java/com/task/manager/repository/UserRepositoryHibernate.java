@@ -51,7 +51,7 @@ public class UserRepositoryHibernate implements UserRepository{
        try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             String hql = "from User where username = :name";
             return Optional.ofNullable(session.createQuery(hql,User.class)
-                            .setParameter("username", username)
+                            .setParameter("name", username)
                             .uniqueResult());
         } catch (Exception e) {
             throw e;

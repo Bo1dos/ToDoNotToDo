@@ -1,5 +1,6 @@
 package com.task.manager.infrastructure.command.cli;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -10,14 +11,26 @@ public class CommandValidationsRules {
     /**
      * Необходимые аргументы для команды (команда - ключ, Set - необходимые аргументы для команды)
      */
-    Map<String, Set<String>> requiredArgs = Map.of(
-        "register", Set.of("username", "password"),
-        "login", Set.of("username", "password"),
-        "create-task", Set.of(), // всё необязательно
-        "update-task", Set.of("id"),
-        "delete-task", Set.of("id"),
-        "show-task", Set.of("id"),
-        "find-task-by-header", Set.of("header")
+    Map<String, Set<String>> requiredArgs = Map.ofEntries(
+        Map.entry("register", Set.of("username", "password")),
+        Map.entry("login", Set.of("username", "password")),
+        Map.entry("logout", Set.of()),
+
+        Map.entry("create-task", Set.of()), // всё необязательно
+        Map.entry("update-task", Set.of("id")),
+        Map.entry("delete-task", Set.of("id")),
+        Map.entry("show-task", Set.of("id")),
+        Map.entry("find-task-by-header", Set.of("header")),
+
+        Map.entry("list-tasks", Set.of()),
+        Map.entry("list-done", Set.of()),
+        Map.entry("list-undone", Set.of()),
+        Map.entry("list-overdue", Set.of()),
+
+        Map.entry("help", Set.of()),
+        Map.entry("whoami", Set.of()),
+        Map.entry("clear", Set.of()),
+        Map.entry("exit", Set.of())
     );
 
     /**
@@ -32,17 +45,8 @@ public class CommandValidationsRules {
         Map.entry("update-task", Set.of("id", "header", "desc", "deadline")),
         Map.entry("delete-task", Set.of("id")),
         Map.entry("show-task", Set.of("id")),
-        Map.entry("find-task-by-header", Set.of("header")),
+        Map.entry("find-task-by-header", Set.of("header"))
         
-        Map.entry("list-tasks", Set.of()),
-        Map.entry("list-done", Set.of()),
-        Map.entry("list-undone", Set.of()),
-        Map.entry("list-overdue", Set.of()),
-
-        Map.entry("help", Set.of()),
-        Map.entry("whoami", Set.of()),
-        Map.entry("clear", Set.of()),
-        Map.entry("exit", Set.of())
     );
 
     /**
@@ -54,12 +58,8 @@ public class CommandValidationsRules {
 
         Map.entry("hd", "header"),
         Map.entry("d", "desc"),
-        Map.entry("dl", "deadline"),
+        Map.entry("dl", "deadline")
 
-        Map.entry("h", "help"),
-        Map.entry("w", "whoami"),
-        Map.entry("c", "clear"),
-        Map.entry("e", "exit")
     );
 
 
@@ -77,7 +77,34 @@ public class CommandValidationsRules {
      * @return true - если все аргументы есть, false - если каких-то аргументов не достает
      */
     public boolean validate(String command, Map<String, String> args) {
-        return requiredArgs.containsKey(command);
+        if (command == null || command.isBlank()) return false;
+
+        // Команда неизвестна — считаем, что не валидна
+        if (!requiredArgs.containsKey(command) && !allowedArgs.containsKey(command)) {
+            return false;
+        }
+
+        // Нормализуем алиасы и защищаем от null
+        Map<String, String> normalized = normalizeAliases(args == null ? Map.of() : args);
+
+        // Проверяем обязательные флаги
+        Set<String> required = requiredArgs.getOrDefault(command, Collections.emptySet());
+        if (!normalized.keySet().containsAll(required)) {
+            return false;
+        }
+
+        // Проверяем, нет ли запрещённых флагов (если для команды задан список allowed)
+        Set<String> allowed = allowedArgs.getOrDefault(command, Collections.emptySet());
+        if (!allowed.isEmpty()) {
+            for (String provided : normalized.keySet()) {
+                if (!allowed.contains(provided)) return false;
+            }
+        } else {
+            // allowed пустой — значит флаги не ожидаются; если что-то передали — ошибка
+            if (!normalized.isEmpty()) return false;
+        }
+
+        return true;
     }
 
     public Map<String, String> normalizeAliases(Map<String, String> args) {

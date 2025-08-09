@@ -46,12 +46,13 @@ public class Task {
     String description;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "task_status")
     TaskStatus taskStatus;
 
     @Column(name = "creation_at")
     Instant creationAt;
 
-    @Column(name = "dead_line")
+    @Column(name = "deadline")
     Instant deadLine; 
 
     public enum TaskStatus {

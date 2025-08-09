@@ -18,7 +18,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: passwordHash
+                  name: password_hash
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
@@ -52,17 +52,17 @@ databaseChangeLog:
                   constraints:
                     nullable: true
               - column:
-                  name: taskStatus
+                  name: task_status
                   type: VARCHAR(20)
                   constraints:
                     nullable: false
               - column:
-                  name: creationAt
+                  name: creation_at
                   type: TIMESTAMP
                   constraints:
                     nullable: true
               - column:
-                  name: deadLine
+                  name: deadline
                   type: TIMESTAMP
                   constraints:
                     nullable: true
