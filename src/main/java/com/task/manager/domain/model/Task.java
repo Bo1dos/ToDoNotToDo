@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Класс-задача.
@@ -28,6 +29,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Builder
 
 @Entity

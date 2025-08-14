@@ -3,10 +3,12 @@ package com.task.manager.view.ui.cli;
 import java.io.Console;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 
 import com.task.manager.domain.dto.TaskDTO;
 import com.task.manager.domain.dto.UserDTO;
+import com.task.manager.domain.model.Task;
 import com.task.manager.infrastructure.ShutdownManager;
 import com.task.manager.infrastructure.command.CommandDispatcher;
 import com.task.manager.infrastructure.command.cli.CliCommandParser;
@@ -44,7 +46,7 @@ public class CliUserInterfaceImpl implements UserInterface, OutputHandler {
 
             CommandResult<?> result =  commandDispatcher.dispatch(commandname, commandArgs);
      
-
+            handler(result);
         }
     }
 
@@ -69,7 +71,20 @@ public class CliUserInterfaceImpl implements UserInterface, OutputHandler {
         result.getPayload().ifPresent(payload -> {
             if (payload instanceof TaskDTO) {
                 ConsoleTableUtils.printTask((TaskDTO) payload);
-            } else if (payload instanceof List) {
+            } 
+            
+            else if (payload instanceof Optional) {
+                Optional<?> optional = (Optional) payload;
+                if(optional.isEmpty()) {
+                    
+                } else if (optional.get() instanceof TaskDTO) {
+                    ConsoleTableUtils.printTask((TaskDTO) optional.get());
+                } else if (optional.get() instanceof UserDTO) {
+                    ConsoleTableUtils.printInfo(String.valueOf(optional.get())); //TODO: fix
+                }
+            }
+            
+            else if (payload instanceof List) {
                 List<?> list = (List<?>) payload;
                 if (!list.isEmpty() && list.get(0) instanceof TaskDTO) {
                     //noinspection unchecked

@@ -54,7 +54,7 @@ public final class EventFactory {
 
     public Event taskFoundAll(int count, boolean isSuccess) {
         ResourceBundle resourceBundle = bundleProvider.getBundle();
-        return new SimpleEvent(EventType.TASK_FOUND_ALL, resourceBundle, String.valueOf(count), isSuccess);
+        return new SimpleEvent(EventType.TASK_FOUND_ALL, resourceBundle, count, isSuccess);
     }
 
     public Event taskFoundByHeader(String header, boolean isSuccess) {

@@ -15,7 +15,8 @@ public class FindAllTasksCommand implements Command<List<TaskDTO>> {
 
     @Override
     public List<TaskDTO> execute() {
-        return taskController.findAll();
+        List<TaskDTO> temp = taskController.findAll();
+        return temp;
     }
     
 }

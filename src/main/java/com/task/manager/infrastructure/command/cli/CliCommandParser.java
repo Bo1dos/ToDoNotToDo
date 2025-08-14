@@ -40,7 +40,7 @@ public class CliCommandParser {
                 
 
                 if(value.startsWith("\"") && value.endsWith("\"")) {
-                    value.substring(1, value.length()-1);
+                    value = value.substring(1, value.length()-1);
                 }
 
                 args.put(key, value);

@@ -34,6 +34,8 @@ public class AuthServiceImpl implements AuthService {
     public boolean login(UserDTO userDTO) {
         String username = new String(userDTO.getUsername()); 
         char[] rawPassword = userDTO.getRawPassword();
+
+
         Optional<User> user = userRepository.findByUsername(username);
 
         if(user.isEmpty()) { 

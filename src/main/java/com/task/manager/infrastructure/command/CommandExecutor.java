@@ -17,7 +17,8 @@ public class CommandExecutor {
     public <T> CommandResult<T> execute(Command<T> command) {
         try {
             T raw = command.execute();
-
+            
+            
             if (raw == null) {
                 return CommandResult.none();
             }
@@ -37,8 +38,8 @@ public class CommandExecutor {
             return CommandResult.failrue(eventFactory.accessDenied().message());
         } catch (IllegalArgumentException e) {
             notificationService.publish(eventFactory.validationFailed());
-
             //TODO: переписать под логгер
+
             ExceptionUtils.getStackTraceAsString(e);
             return CommandResult.failrue(eventFactory.validationFailed().message());
         } catch (Exception e) {

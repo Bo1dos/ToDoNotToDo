@@ -13,6 +13,7 @@ public class DefaultNotificationService implements NotificationService {
 
     @Override
     public void publish(Event event) {
+        System.out.println("Сервис пашет?");
         notifier.notify(event);
     }
 }

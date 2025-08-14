@@ -7,15 +7,14 @@ import lombok.AllArgsConstructor;
 
 public class MessageBundleProvider {
     private Locale currentLocale = Locale.getDefault(); // по умолчанию
-    private ResourceBundle bundle = ResourceBundle.getBundle("messages", currentLocale);
 
     public ResourceBundle getBundle() {
-        return bundle;
+        return ResourceBundle.getBundle("messages", currentLocale);
     }
 
     public void setLocale(Locale newLocale) {
         this.currentLocale = newLocale;
-        this.bundle = ResourceBundle.getBundle("messages", currentLocale);
+        ResourceBundle.clearCache(); // на всякий случай
     }
 
     public Locale getCurrentLocale() {

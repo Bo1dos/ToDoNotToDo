@@ -15,6 +15,7 @@ public class UserRepositoryHibernate implements UserRepository{
 
     @Override
     public void add(User user) {
+
         Transaction ts = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             ts = session.beginTransaction();
@@ -63,7 +64,22 @@ public class UserRepositoryHibernate implements UserRepository{
         Transaction ts = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             ts = session.beginTransaction();
-            session.merge(user);
+            String hql = """
+                            from User u set
+                                u.username = coalesce(:username, u.username),
+                                u.password_hash = coalesce(:password_hash, u.password_hash),
+                                u.salt = coalesce(:salt, u.salt)
+                            where u.id = :id
+                        """;
+            
+            
+            
+            session.createQuery(hql, User.class)
+                        .setParameter("username", user.getUsername())
+                        .setParameter("password_hash", user.getPasswordHash())
+                        .setParameter("salt", user.getSalt())
+                        .setParameter("id", user.getId());
+
             ts.commit();
         } catch (Exception e) {
             if(ts != null) {ts.rollback();}

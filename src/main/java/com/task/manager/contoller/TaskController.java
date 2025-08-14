@@ -60,7 +60,9 @@ public class TaskController {
             notificationService.publish(eventFactory.taskFoundAll(size, false));
         }
         
+
         notificationService.publish(eventFactory.taskFoundAll(size, true));
+
 
         return allTask.stream()
                         .map(entityMapper::toDto)

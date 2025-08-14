@@ -1,5 +1,6 @@
 package com.task.manager.utils;
 
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
@@ -68,32 +69,21 @@ public class PasswordUtils {
 
         try {
 
-            PBEKeySpec spec = new PBEKeySpec(rawPassword, salt.getBytes(), ITERATIONS, KEY_LENGTH);
-            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-            byte[] generatedHash = skf.generateSecret(spec).getEncoded();
+            byte[] saltBytes = Base64.getDecoder().decode(salt);  
+            byte[] generatedHash = hash(rawPassword, saltBytes);
 
 
             // Декодирование оригинального хеша из Base64
             byte[] originalHash = Base64.getDecoder().decode(passwordHash);
-        
-             // Преобразование в читаемый формат для отладки
-        String generatedBase64 = Base64.getEncoder().encodeToString(generatedHash);
-        String generatedHex = bytesToHex(generatedHash);
-        String originalHex = bytesToHex(originalHash);
-        
-        // Подробный вывод для отладки
-        System.out.println("=== DEBUG: Password Verification ===");
-        System.out.println("Salt: " + salt);
-        System.out.println("Generated hash (Base64): " + generatedBase64);
-        System.out.println("Stored hash (Base64):    " + passwordHash);
-        System.out.println("Generated hash (HEX):    " + generatedHex);
-        System.out.println("Stored hash (HEX):       " + originalHex);
-        System.out.println("Length comparison: " + generatedHash.length + " vs " + originalHash.length);
-        System.out.println("Arrays equal: " + Arrays.equals(generatedHash, originalHash));
-        System.out.println("===================================");
+    
 
             // Сравнение массивов байт
-            return Arrays.equals(generatedHash, originalHash);
+            boolean equals = java.security.MessageDigest.isEqual(generatedHash, originalHash);
+
+            // очищаем секреты
+            Arrays.fill(generatedHash, (byte)0);
+            Arrays.fill(originalHash, (byte)0);
+            return equals;
 
         } catch (Exception e) {
             throw new RuntimeException("Ошибка проверки пароля", e);

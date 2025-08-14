@@ -17,6 +17,7 @@ public class SimpleEvent implements Event {
 
     @Override
     public String message() {
+        System.out.println("Запрос сообщения от ивента");
         return message;
     }
 

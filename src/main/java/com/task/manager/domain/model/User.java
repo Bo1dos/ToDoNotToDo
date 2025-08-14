@@ -15,12 +15,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Builder
 @Setter
+@Getter
+@ToString
+@Builder
+
 @Entity
 @Table(name = "users")
 public class User {

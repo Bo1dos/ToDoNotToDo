@@ -45,7 +45,7 @@ public enum EventType {
 
     public String format(ResourceBundle bundle, Object... args) {
         String pattern = bundle.getString(messageKey);
-        return String.format(pattern, args);
+        return String.format(bundle.getLocale(), pattern, args);
     }
 }
 

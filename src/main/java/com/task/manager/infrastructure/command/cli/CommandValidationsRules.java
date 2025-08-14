@@ -27,6 +27,7 @@ public class CommandValidationsRules {
         Map.entry("list-undone", Set.of()),
         Map.entry("list-overdue", Set.of()),
 
+        Map.entry("set-language", Set.of("lang")),
         Map.entry("help", Set.of()),
         Map.entry("whoami", Set.of()),
         Map.entry("clear", Set.of()),
@@ -45,7 +46,9 @@ public class CommandValidationsRules {
         Map.entry("update-task", Set.of("id", "header", "desc", "deadline")),
         Map.entry("delete-task", Set.of("id")),
         Map.entry("show-task", Set.of("id")),
-        Map.entry("find-task-by-header", Set.of("header"))
+        Map.entry("find-task-by-header", Set.of("header")),
+
+        Map.entry("set-language", Set.of("lang"))
         
     );
 
@@ -56,7 +59,7 @@ public class CommandValidationsRules {
         Map.entry("u", "username"),
         Map.entry("p", "password"),
 
-        Map.entry("hd", "header"),
+        Map.entry("h", "header"),
         Map.entry("d", "desc"),
         Map.entry("dl", "deadline")
 

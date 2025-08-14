@@ -23,7 +23,8 @@ public class TaskMapper implements EntityMapper<Task, TaskDTO> {
                                     .orElse(null))               // при update/id уже известен, при create - null
                 .header(dto.getHeader())
                 .description(dto.getDescription())
-                .creationAt(dto.getCreationAt())
+                .creationAt(Optional.ofNullable(dto.getDeadLine())
+                                    .orElse(Instant.now()))
                 .deadLine(Optional.ofNullable(dto.getDeadLine())
                                     .orElse(Instant.now().plus(1, ChronoUnit.DAYS)))
                 .taskStatus(Optional.ofNullable(dto.getTaskStatus())

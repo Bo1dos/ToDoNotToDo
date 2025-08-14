@@ -1,6 +1,6 @@
 #FileLock
-#Sat Aug 09 17:21:57 MSK 2025
-hostName=DESKTOP-DAF45J6
-id=1988f35a8acb31ba701b99e7dfa1ed07c178b9e3fb4
+#Thu Aug 14 22:56:52 MSK 2025
+hostName=DESKTOP-DAF45J6.mshome.net
+id=198aa2813a3068c447fe78316470dc1f251a4a11b0a
 method=file
-server=10.2.0.2\:51525
+server=172.27.128.1\:54597

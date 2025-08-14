@@ -89,10 +89,34 @@ public class TaskRepositoryHibernate implements TaskRepository {
         Transaction ts = null;
         try (Session session = HibernateUtils.getSessionFactory().openSession()) {
             ts = session.beginTransaction();
-            session.merge(task);
+            String hql = """
+                            update Task t set
+                                t.header = coalesce(:header, t.header),
+                                t.description = coalesce(:description, t.description),
+                                t.taskStatus = coalesce(:taskStatus, t.taskStatus),
+                                t.creationAt = coalesce(:creationAt, t.creationAt),
+                                t.deadLine = coalesce(:deadLine, t.deadLine)       
+                            where t.id = :id
+                        """;
+
+            session.createMutationQuery(hql)
+                    .setParameter("header", task.getHeader())
+                    .setParameter("description", task.getDescription())
+                    .setParameter("taskStatus", task.getTaskStatus())
+                    .setParameter("creationAt", task.getCreationAt())
+                    .setParameter("deadLine", task.getDeadLine())
+                    .setParameter("id", task.getId())
+                    .executeUpdate();
             ts.commit();
+           
         } catch (Exception e) {
-            if(ts != null) {ts.rollback();}
+            try {
+                if (ts != null) ts.rollback();
+            } catch (Exception rbEx) {
+                // логгировать надо
+                //System.err.println("Rollback failed: " + rbEx.getMessage());
+            }
+            
             throw e;
         }
     }

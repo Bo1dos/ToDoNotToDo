@@ -8,11 +8,11 @@ import com.task.manager.domain.dto.TaskDTO;
 public class ConsoleTableUtils {
 
     public static void printTasks(List<TaskDTO> tasks) {
-        System.out.printf("%-36s %-20s %-10s %-20s %-20s\n",
+        System.out.printf("%-36s %-20s %-10s %-30s %-30s\n",
             "ID", "Header", "Status", "Deadline", "CreatedAt");
-        System.out.println("=".repeat(110));
+        System.out.println("=".repeat(130));
         for (TaskDTO task : tasks) {
-            System.out.printf("%-36s %-20s %-10s %-20s %-20s\n",
+            System.out.printf("%-36s %-20s %-10s %-30s %-30s\n",
                 task.getId(),
                 task.getHeader(),
                 task.getTaskStatus(),
@@ -22,7 +22,7 @@ public class ConsoleTableUtils {
     }
 
     public static void printTask(TaskDTO task) {
-        System.out.println("=".repeat(50));
+        System.out.println("=".repeat(55));
         System.out.printf("%-12s: %s%n", "ID", task.getId());
         System.out.printf("%-12s: %s%n", "Header", task.getHeader());
         System.out.printf("%-12s: %s%n", "Desc", task.getDescription());
@@ -30,7 +30,7 @@ public class ConsoleTableUtils {
         System.out.printf("%-12s: %s%n", "Deadline", 
             task.getDeadLine() != null ? task.getDeadLine() : "-");
         System.out.printf("%-12s: %s%n", "CreatedAt", task.getCreationAt());
-        System.out.println("=".repeat(50));
+        System.out.println("=".repeat(55));
     }
 
     public static void printInfo(String msg) {
